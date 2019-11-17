@@ -1,0 +1,6 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="margin_medium">8dp</dimen>
+    <dimen name="card_radius_small">1dp</dimen>
+    <dimen name="card_elevation">2dp</dimen>
+</resources>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.DetailShowMapActivity">
+
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/sv_location"
+        android:layout_width="wrap_content"
+        android:paddingTop="@dimen/margin_medium"
+        android:paddingBottom="@dimen/margin_medium"
+        android:layout_height="wrap_content"/>
+
+
+    <fragment
+        android:layout_below="@+id/sv_location"
+        android:id="@+id/myMap"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="450dp" />
+
+    <RelativeLayout
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/myMap"
+        android:layout_alignParentBottom="true"
+        android:padding="@dimen/margin_medium"
+        android:paddingLeft="@dimen/margin_medium"
+        android:paddingTop="@dimen/margin_medium">
+
+        <com.github.abdularis.civ.CircleImageView
+            android:id="@+id/iv_profile"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:adjustViewBounds="true"
+            android:clickable="false"
+            android:scaleType="fitCenter"
+            android:src="@drawable/user_circle"
+            app:srcCompat="@drawable/user_circle" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_toRightOf="@+id/iv_profile"
+            android:hint="Name"
+            android:paddingLeft="@dimen/margin_medium"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/lbl_job_no"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:layout_below="@+id/tv_name"
+            android:layout_toRightOf="@+id/iv_profile"
+            android:paddingLeft="@dimen/margin_medium"
+            android:text="Job Number"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_job_no"
+            android:layout_width="120dp"
+            android:layout_height="30dp"
+            android:layout_below="@+id/tv_name"
+            android:layout_toRightOf="@+id/lbl_job_no"
+            android:hint="123"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+</RelativeLayout>

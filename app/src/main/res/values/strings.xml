@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">JobSampleProject</string>
+    <string name="action_settings">Settings</string>
+
+
+    <string name="map_key" translatable="false">AIzaSyD_UpLcOKjOIiHwayu_9jCKtvvTvUemSzw</string>
+
+
+</resources>
