@@ -84,6 +84,7 @@ public class DetailShowMapActivity extends BaseActivity implements OnMapReadyCal
         tv_name.setText(chooseJobData.getCompanyName());
         tv_job_no.setText(String.valueOf(chooseJobData.getJobId()));
 
+        iv_back.setOnClickListener(this::onClick);
         iv_logout.setOnClickListener(this::onClick);
     }
 
