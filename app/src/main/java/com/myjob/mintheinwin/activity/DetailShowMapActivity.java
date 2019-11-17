@@ -6,13 +6,20 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NavUtils;
 import androidx.fragment.app.FragmentActivity;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
@@ -20,10 +27,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.myjob.mintheinwin.R;
@@ -33,7 +40,7 @@ import com.myjob.mintheinwin.mvp.data.ObjectWrapperForBinder;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DetailShowMapActivity extends FragmentActivity implements OnMapReadyCallback {
+public class DetailShowMapActivity extends BaseActivity implements OnMapReadyCallback , View.OnClickListener {
 
     Location currentLocation;
     FusedLocationProviderClient fusedLocationProviderClient;
@@ -46,6 +53,10 @@ public class DetailShowMapActivity extends FragmentActivity implements OnMapRead
     TextView tv_name;
     @BindView(R.id.tv_job_no)
     TextView tv_job_no;
+    @BindView(R.id.iv_back)
+    AppCompatImageView iv_back;
+    @BindView(R.id.iv_logout)
+    AppCompatImageView iv_logout;
 
     public static Intent newIntent(Context context, JobDataResponse jobDataResponse) {
         Intent intent = new Intent(context, DetailShowMapActivity.class);
@@ -62,17 +73,18 @@ public class DetailShowMapActivity extends FragmentActivity implements OnMapRead
         setContentView(R.layout.activity_details_map);
         ButterKnife.bind(this);
 
+        /*getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);*/
         fetchLocation();
-
-        /*Intent intent = this.getIntent();
-        Bundle bundle = intent.getExtras();
-        chooseJobData = (JobDataResponse) bundle.getSerializable(DATA);*/
-        //chooseJobData=(JobDataResponse)getIntent().getSerializableExtra(DATA);
 
         chooseJobData = ((ObjectWrapperForBinder) getIntent().getExtras().getBinder(DATA)).getData();
 
         tv_name.setText(chooseJobData.getCompanyName());
         tv_job_no.setText(String.valueOf(chooseJobData.getJobId()));
+
+        iv_logout.setOnClickListener(this::onClick);
     }
 
     @Override
@@ -156,6 +168,31 @@ public class DetailShowMapActivity extends FragmentActivity implements OnMapRead
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     fetchLocation();
                 }
+                break;
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.iv_back:
+                this.finish();
+                break;
+            case R.id.iv_logout:
+                getGoogleLogout();
                 break;
         }
     }

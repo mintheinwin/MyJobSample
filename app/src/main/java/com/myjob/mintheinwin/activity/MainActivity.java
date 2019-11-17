@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,15 +29,17 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends BaseActivity implements MyJobView , JobItemDeligate {
+public class MainActivity extends BaseActivity implements MyJobView , JobItemDeligate, View.OnClickListener {
 
-    private GoogleSignInClient mGoogleSignInClient;
+
     private MainPresenter mainPresenter;
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
     @BindView(R.id.job_list)
     RecyclerView mRecyclerJobListView;
     private MyJobAdapter myJobAdapter;
+
+    @BindView(R.id.iv_logout)
+    AppCompatImageView iv_logout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +47,7 @@ public class MainActivity extends BaseActivity implements MyJobView , JobItemDel
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        setSupportActionBar(toolbar);
+       // setSupportActionBar(toolbar);
         mainPresenter =new MainPresenter(getBaseContext());
         mainPresenter.onCreate(this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getBaseContext(), RecyclerView.VERTICAL, false);
@@ -54,6 +58,8 @@ public class MainActivity extends BaseActivity implements MyJobView , JobItemDel
         myJobAdapter=new MyJobAdapter(getApplicationContext(),this);
         mRecyclerJobListView.setHasFixedSize(true);
         mRecyclerJobListView.setAdapter(myJobAdapter);
+
+        iv_logout.setOnClickListener(this);
 
     }
 
@@ -79,25 +85,9 @@ public class MainActivity extends BaseActivity implements MyJobView , JobItemDel
         return super.onOptionsItemSelected(item);
     }
 
-    private void signOut() {
-        mGoogleSignInClient.signOut()
-                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        // ...
-                    }
-                });
-    }
 
-    private void revokeAccess() {
-        mGoogleSignInClient.revokeAccess()
-                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        // ...
-                    }
-                });
-    }
+
+
 
     @Override
     public void responseMyJobListView(List<JobDataResponse> jobDataResponse) {
@@ -114,5 +104,14 @@ public class MainActivity extends BaseActivity implements MyJobView , JobItemDel
 
      Intent intent=DetailShowMapActivity.newIntent(MainActivity.this,jobDataResponse);
      startActivity(intent);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.iv_logout:
+            getGoogleLogout();
+            break;
+        }
     }
 }
